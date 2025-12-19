@@ -18,7 +18,7 @@ function conMysql(){
             console.log('db err', err);
             //setTimeout(conMysql, 2000);
         }else{
-            console.log('Conexión establecida exitosamente')
+            console.log('Conexión con la BD establecida exitosamente')
         }
     });
 
@@ -35,7 +35,12 @@ function conMysql(){
 conMysql();
 
 function todos(tabla){
-    return 'Todos - Acá estaría la información'
+    return new Promise((resolve, reject)=>{
+        conexion.query(`SELECT * FROM ${tabla}`, (error,result)=>{
+            if(error) return reject(error);
+            resolve(result);
+        })
+    });
 }
 
 function uno(tabla, id){
