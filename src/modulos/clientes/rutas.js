@@ -6,11 +6,11 @@ const controlador = require('./controlador');
 
 const router = express.Router()
 
-router.get('/',(req,res) => {
-    const todos = controlador.todos()
-    .then((items)=>{
-        respuesta.success(req, res, items, 200);
-    });
+//Esta es la respuesta final de nuestro servidor a la solicitud que se nos hizo
+router.get('/', async (req,res) => {
+    const items = await controlador.todos()
+    
+    respuesta.success(req, res, items, 200);
 });
 
 module.exports = router;
