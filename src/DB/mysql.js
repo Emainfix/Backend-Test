@@ -56,8 +56,13 @@ function agregar (){
 
 }
 
-function eliminar(tabla, id){
-
+function eliminar(tabla, data){
+    return new Promise((resolve, reject)=>{
+        conexion.query(`DELETE FROM ${tabla} WHERE id= ?`, data.id, (error,result)=>{
+            return error ? reject(error) : resolve(result);
+            
+        })
+    });
 }
 
 module.exports = {

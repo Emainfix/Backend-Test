@@ -7,7 +7,10 @@ const clientes = require('./modulos/clientes/rutas')
 //Importado de la función objeto 
 const app = express();
 
-app.use(morgan('dev'))
+//Middlewares
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 //Puerto configuración en función express()
 app.set('port', config.app.port)
