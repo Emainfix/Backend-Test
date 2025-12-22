@@ -37,8 +37,8 @@ conMysql();
 function todos(tabla){
     return new Promise((resolve, reject)=>{
         conexion.query(`SELECT * FROM ${tabla}`, (error,result)=>{
-            if(error) return reject(error);
-            resolve(result);
+            return error ? reject(error) : resolve(result);
+            
         })
     });
 }
@@ -46,8 +46,8 @@ function todos(tabla){
 function uno(tabla, id){
     return new Promise((resolve, reject)=>{
         conexion.query(`SELECT * FROM ${tabla} WHERE id=${id}`, (error,result)=>{
-            if(error) return reject(error);
-            resolve(result);
+            return error ? reject(error) : resolve(result);
+            
         })
     });
 }
