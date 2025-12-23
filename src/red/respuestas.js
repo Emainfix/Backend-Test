@@ -1,4 +1,4 @@
-exports.success = function (res, mensaje, status){
+exports.success = function (req, res, mensaje, status){
     const statusCode = status || 200;
     const mensajeOk = mensaje || '';
 
@@ -10,9 +10,10 @@ exports.success = function (res, mensaje, status){
     });
 }
 
-exports.error = function (res, mensaje, status){
+exports.error = function (req, res, mensaje, status){
     const statusCode = status || 500;
     const mensajeError = mensaje || 'error interno';
+    
     res.status(statusCode).send({
         error: true,
         status: statusCode,

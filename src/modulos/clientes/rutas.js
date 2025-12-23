@@ -8,33 +8,47 @@ const router = express.Router()
 
 router.get('/', todos);
 router.get('/:id', uno);
+router.post('/', agregar);
+router.delete('/:id', eliminar);
 
-router.put('/', eliminar);
-
-async function todos (req,res) {
+async function todos (req,res,next) {
     try{
         const items = await controlador.todos()
-        respuesta.success(res, items, 200);
+        respuesta.success(req, res, items, 200);
     }catch(err){
-        respuesta.error(res, err, 500);
+        next(err);
     }
 };
 
-async function uno (req,res) {
+async function uno (req,res,next) {
     try{
         const items = await controlador.uno(req.params.id)
-        respuesta.success(res, items, 200);
+        respuesta.success(req, res, items, 200);
     }catch(err){
-        respuesta.error(res, err, 500);
+        next(err);
     }
 };
 
-async function eliminar (req,res) {
+async function agregar (req,res,next) {
     try{
-        const items = await controlador.eliminar(req.body)
-        respuesta.success(res, 'El elemento ha sido eliminado', 200);
+        const items = await controlador.agregar(req.body)
+        if(req.body.id == 0){
+            mensaje = 'Item guardado correctamente';
+        }else{
+            mensaje = 'Item actualizado correctamente';
+        }
+        respuesta.success(req, res, mensaje, 201);
     }catch(err){
-        respuesta.error(res, err, 500);
+        next(err);
+    }
+};
+
+async function eliminar (req,res,next) {
+    try{
+        const items = await controlador.eliminar(req.params.id)
+        respuesta.success(req, res, 'El elemento ha sido eliminado', 200);
+    }catch(err){
+        next(err);
     }
 };
 
