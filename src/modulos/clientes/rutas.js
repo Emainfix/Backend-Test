@@ -2,7 +2,7 @@ const express = require('express');
 
 const respuesta = require('../../red/respuestas')
 
-const controlador = require('./controlador');
+const controlador = require('../clientes/index');
 
 const router = express.Router()
 
