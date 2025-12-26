@@ -4,6 +4,7 @@ const config = require('./config');
 
 const clientes = require('./modulos/clientes/rutas')
 const usuarios = require('./modulos/usuarios/rutas')
+const auth = require('./modulos/auth/rutas')
 const error = require('../src/red/errors')
 
 //Importado de la función objeto 
@@ -18,8 +19,9 @@ app.use(express.urlencoded({extended: true}));
 app.set('port', config.app.port)
 
 //Rutas
-app.use('/api/clientes', clientes)
-app.use('/api/usuarios', usuarios)
+app.use('/api/clientes', clientes);
+app.use('/api/usuarios', usuarios);
+app.use('/api/auth', auth);
 app.use(error);
 
 module.exports = app;
