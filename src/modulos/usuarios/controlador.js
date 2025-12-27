@@ -1,4 +1,5 @@
 const TABLA = 'usuarios';
+const TABLA2 = 'auth';
 const auth = require('../auth');
 
 module.exports = function(dbInyectada){
@@ -50,7 +51,11 @@ module.exports = function(dbInyectada){
         
 
     function eliminar(id){
-        return db.eliminar(TABLA, id);
+        
+        return(
+            db.eliminar(TABLA, id),
+            db.eliminar(TABLA2, id))
+
     }
 
     return{

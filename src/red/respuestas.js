@@ -11,10 +11,13 @@ exports.success = function (req, res, mensaje, status){
 }
 
 exports.error = function (req, res, mensaje, status){
-    
+
+    const statusCode = status || 500;
+    const mensajeError = mensaje || '';
+
     res.status(statusCode).send({
         error: true,
-        status: status,
-        body: mensaje
+        status: statusCode,
+        body: mensajeError
     });
 }
