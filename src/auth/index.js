@@ -37,6 +37,7 @@ function decodificarCabecera(req){
 
 const checkToken = {
     confirmarToken: function (req, id){
+        
         const decodificado = decodificarCabecera(req);
 
         if(decodificado.id != id){
