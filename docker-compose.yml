@@ -10,6 +10,8 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - '${MYSQL_PORT_HOST}:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
 
   api:
     image: mi-api
@@ -19,3 +21,6 @@ services:
       - .env
     depends_on:
       - db
+  
+volumes:
+  mysql_data:
