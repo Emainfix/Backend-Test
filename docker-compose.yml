@@ -1,0 +1,21 @@
+
+services:
+  db:
+    image: mysql:8
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - '${MYSQL_PORT_HOST}:3306'
+
+  api:
+    image: mi-api
+    ports:
+      - '${PORT_LOCAL}:4000'
+    env_file:
+      - .env
+    depends_on:
+      - db

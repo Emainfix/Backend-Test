@@ -3,6 +3,7 @@ const config = require('../config');
 
 const dbconfig = {
     host: config.mysql.host,
+    port: config.mysql.port,
     user: config.mysql.user,
     password: config.mysql.password,
     database: config.mysql.database,
@@ -12,24 +13,25 @@ let conexion;
 
 function conMysql(){
     conexion = mysql.createConnection(dbconfig);
-
+    
     conexion.connect((err)=>{
         if(err){
             console.log('db err', err);
-            //setTimeout(conMysql, 2000);
+            console.log('Reintentando conexión')
+            setTimeout(conMysql, 2000);
         }else{
             console.log('Conexión con la BD establecida exitosamente')
         }
     });
 
-    conexion.on('error',(err)=>{
+    /*conexion.on('error',(err)=>{
         console.log('db error', err);
         if(err.code === 'PROTOCOL_CONNECTION_LOST'){
             conMysql();
         }else{
             throw err;
         }
-    })
+    })*/
 }
 
 conMysql();
