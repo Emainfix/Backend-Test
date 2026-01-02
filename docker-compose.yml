@@ -1,4 +1,3 @@
-
 services:
   db:
     image: mysql:8
@@ -14,7 +13,7 @@ services:
       - mysql_data:/var/lib/mysql
 
   api:
-    image: mi-api
+    build: .
     ports:
       - '${PORT_LOCAL}:4000'
     env_file:
