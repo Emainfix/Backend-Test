@@ -44,7 +44,7 @@ async function agregar (req,res,next) {
 async function modificar (req,res,next) {
     try{
         const items = await controlador.modificar(req.params.id, req.body)
-        respuesta.success(req, res, 'El elemento ha sido modificado', 201);
+        respuesta.success(req, res, 'El elemento ha sido modificado', 200);
     }catch(err){
         next(err);
     }

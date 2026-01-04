@@ -14,19 +14,17 @@ Dockerized and deployed on AWS EC2.
 
 ## ▶️ Run Locally
 
-````bash
+```bash
 git clone https://github.com/Emainfix/Backend-Test.git
 cd Backend-Test
 docker-compose up -d
 
-
----
+```
 
 ## 📡 API Endpoints
 
 Base URL (AWS EC2):
 http://3.131.83.205:3000
-
 
 > ⚠️ Nota: La API está desplegada en una instancia EC2 y conectada a una base de datos MySQL en AWS RDS.
 
@@ -39,6 +37,7 @@ Estos endpoints están disponibles para pruebas libres (pensados para reclutador
 📄 Obtener todos los registros (datos públicos)
 
 Devuelve todos los registros de la base de datos **excluyendo información sensible** como:
+
 - nombres de usuario
 - contraseñas
 - hashes
@@ -47,6 +46,7 @@ Devuelve todos los registros de la base de datos **excluyendo información sensi
 GET /api/usuarios
 
 ✅ Response ejemplo
+
 ```json
 {
   "error": false,
@@ -59,27 +59,7 @@ GET /api/usuarios
 		}
   ]
 }
-
-***
-
-Crea un nuevo usuario y guarda la contraseña hasheada.
-
-POST /api/usuarios/registrar
-
-📥 Body
-{
-  	"nombre": "tuNombre",
-	"usuario": "nombreUsuario",
-	"password": "tuPassword",
-	"activo": 1
-}
-
-✅ Response
-{
-	"error": false,
-	"status": 201,
-	"body": "Item guardado correctamente"
-}
+```
 
 ## 🔐 Protected Endpoints (JWT)
 
@@ -87,7 +67,31 @@ Los siguientes endpoints requieren autenticación mediante JWT.
 
 🧾 Registro de usuario
 
-***
+Crea un nuevo usuario y guarda la contraseña hasheada.
+
+POST /api/usuarios/
+
+📥 Body
+```json
+{
+  	"nombre": "tuNombre",
+	"usuario": "nombreUsuario",
+	"password": "tuPassword",
+	"activo": 1
+}
+```
+
+✅ Response
+
+```json
+{
+  "error": false,
+  "status": 201,
+  "body": "Item guardado correctamente"
+}
+```
+
+---
 
 🔑 Login de usuario
 
@@ -96,87 +100,105 @@ Devuelve un token JWT válido.
 POST /api/auth/login
 
 📥 Body
+
+```json
 {
   "usuario": "nombreUsuario",
   "password": "tuPassword"
 }
+```
 
 ✅ Response
-{
-	"error": false,
-	"status": 200,
-	"body": "eyJhb..."
-}
 
-***
+```json
+{
+  "error": false,
+  "status": 200,
+  "body": "eyJhb..."
+}
+```
+
+---
 
 👤 Obtener información de un usuario
 
 Devuelve la información de un usuario específico.
 
-GET /api/usuarios:id
+GET /api/usuarios/:id
 
 🔐 Headers
 Authorization: Bearer <JWT_TOKEN>
 
 ✅ Response
-{
-	"error": false,
-	"status": 200,
-	"body": [
-		{
-			"id": 2,
-			"nombre": "Nombre",
-			"activo": "1"
-		}
-	]
-}
 
-***
+```json
+{
+  "error": false,
+  "status": 200,
+  "body": [
+    {
+      "id": 2,
+      "nombre": "Nombre",
+      "activo": "1"
+    }
+  ]
+}
+```
+
+---
 
 ✏️ Actualizar datos de usuario
 
-Actualiza los datos del usuario autenticado.
+Actualiza los datos del usuario por ID.
 
-PATCH /api/usuarios:id
+PATCH /api/usuarios/:id
 
 🔐 Headers
 Authorization: Bearer <JWT_TOKEN>
 
 📥 Body
+
+```json
 {
-  	"nombre": "tuNombre",
-	"usuario": "nombreUsuario",
-	"password": "tuPassword",
-	"activo": 1
+  "nombre": "tuNombre",
+  "usuario": "nombreUsuario",
+  "password": "tuPassword",
+  "activo": 1
 }
+```
 
 ✅ Response
-{
-	"error": false,
-	"status": 201,
-	"body": "El elemento ha sido modificado"
-}
 
-***
+```json
+{
+  "error": false,
+  "status": 200,
+  "body": "El elemento ha sido modificado"
+}
+```
+
+---
 
 🗑 Eliminar usuario
 
 Elimina un usuario por ID.
 
-DELETE /api/usuarios:id
+DELETE /api/usuarios/:id
 
 🔐 Headers
 Authorization: Bearer <JWT_TOKEN>
 
 ✅ Response
-{
-	"error": false,
-	"status": 200,
-	"body": "El elemento ha sido eliminado"
-}
 
-***
+```json
+{
+  "error": false,
+  "status": 200,
+  "body": "El elemento ha sido eliminado"
+}
+```
+
+---
 
 🔒 Seguridad
 Contraseñas hasheadas con bcrypt
@@ -193,4 +215,3 @@ API dockerizada
 Desplegada en AWS EC2
 
 MySQL gestionado con AWS RDS
-````
