@@ -24,7 +24,7 @@ docker-compose up -d
 ## 📡 API Endpoints
 
 Base URL (AWS EC2):
-http://3.131.83.205:3000
+http://3.20.80.181:3000
 
 > ⚠️ Nota: La API está desplegada en una instancia EC2 y conectada a una base de datos MySQL en AWS RDS.
 
