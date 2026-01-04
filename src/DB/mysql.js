@@ -63,6 +63,15 @@ function agregar(tabla, data){
     });
 }
 
+function modificar(tabla, id, data){
+    return new Promise((resolve, reject)=>{
+        conexion.query(`UPDATE ${tabla} SET ? WHERE ID = ?`, [data, id], (error,result)=>{
+            return error ? reject(error) : resolve(result);
+            
+        })
+    });
+}
+
 function eliminar(tabla, id){
     return new Promise((resolve, reject)=>{
         conexion.query(`DELETE FROM ${tabla} WHERE id=${id}`, (error,result)=>{
@@ -85,6 +94,7 @@ module.exports = {
     todos,
     uno,
     agregar,
+    modificar,
     eliminar,
     query
 }

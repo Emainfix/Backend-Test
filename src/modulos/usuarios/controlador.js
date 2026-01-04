@@ -18,28 +18,21 @@ module.exports = function(dbInyectada){
         return db.uno(TABLA, id);
     }
 
-    async function agregar(body){
+    async function agregar(body){//Entra el body de la req
 
-        const usuario = {
-            id: body.id,
+        const usuario = { //Acomodamos solo nombre y activo que llega en el body en el obj usuario
             nombre: body.nombre,
             activo: body.activo
         }
 
-        const respuesta = await db.agregar(TABLA, usuario);
+        const respuesta = await db.agregar(TABLA, usuario); // Mandamos el objeto usuario a mysql.js para insertar en la DB
         console.log('respuesta', respuesta);
 
-        var numeroId = 0;
-
-        if(body.id == 0){
-            numeroId = respuesta.insertId;
-        }else{
-            numeroId = body.id;
-        }
+        var numeroId = respuesta.insertId; // Recibimos el id que se creó al insertar en la DB
 
         var respuesta2 = '';
         if(body.usuario || body.password){
-            respuesta2 = await auth.agregar({
+            respuesta2 = await auth.agregar({ // Mandamos a auth usuario y password para guardar en otra tabla
                 id: numeroId,
                 usuario: body.usuario,
                 password: body.password
@@ -48,7 +41,29 @@ module.exports = function(dbInyectada){
 
         return respuesta2;
     }
-        
+
+    async function modificar(id, body){//entra el id de la req y el body
+
+        const usuario = {//Se acomoda nombre y activo de la req dentro del obj usuario
+            nombre: body.nombre,
+            activo: body.activo
+        }
+
+        const respuesta = await db.modificar(TABLA, id, usuario); // Se manda el id de la req junto con el obj usuario a la DB
+        console.log('respuesta', respuesta);
+
+        var respuesta2 = '';
+        if(body.usuario || body.password){
+            respuesta2 = await auth.agregar({ // Se manda el id, usuario y password a la función auth
+                id: id,
+                usuario: body.usuario,
+                password: body.password
+            })
+        }
+
+        return respuesta2;
+    }
+
 
     function eliminar(id){
         
@@ -62,6 +77,7 @@ module.exports = function(dbInyectada){
         todos,
         uno,
         agregar,
+        modificar,
         eliminar
     }
 }

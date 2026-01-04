@@ -10,6 +10,7 @@ const router = express.Router()
 router.get('/', todos);
 router.get('/:id', seguridad(), uno);
 router.post('/', agregar);
+router.patch('/:id', seguridad(), modificar);
 router.delete('/:id', seguridad(), eliminar);
 
 async function todos (req,res,next) {
@@ -33,17 +34,21 @@ async function uno (req,res,next) {
 async function agregar (req,res,next) {
     try{
         const items = await controlador.agregar(req.body)
-        if(req.body.id == 0){
-            mensaje = 'Item guardado correctamente';
-        }else{
-            mensaje = 'Item actualizado correctamente';
-        }
-        respuesta.success(req, res, mensaje, 201);
+
+        respuesta.success(req, res, 'Item guardado correctamente', 201);
     }catch(err){
         next(err);
     }
 };
 
+async function modificar (req,res,next) {
+    try{
+        const items = await controlador.modificar(req.params.id, req.body)
+        respuesta.success(req, res, 'El elemento ha sido modificado', 201);
+    }catch(err){
+        next(err);
+    }
+};
 async function eliminar (req,res,next) {
     try{
         const items = await controlador.eliminar(req.params.id)

@@ -24,21 +24,18 @@ module.exports = function(dbInyectada){
             })
     }
 
-    async function agregar(data){
+    async function agregar(data){ //Recibimos id, usuario y password que nos manda la función agregar
 
-        const authData = {
-            id: data.id
+        const authData = { //Creamos obj con id y usuario
+            id: data.id,
+            usuario: data.usuario
         }
 
-        if(data.usuario){
-            authData.usuario = data.usuario;
-        }
-
-        if(data.password){
+        if(data.password){ // Hashamos el password
             authData.password = await bcrypt.hash(data.password.toString(), 5); 
         }
 
-        return db.agregar(TABLA, authData);
+        return db.agregar(TABLA, authData); // Guardamos el obj en la tabla auth de la DB
     }
 
     return{
