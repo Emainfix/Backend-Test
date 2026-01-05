@@ -18,6 +18,15 @@ app.use(express.urlencoded({extended: true}));
 //Puerto configuración en función express()
 app.set('port', config.app.port)
 
+//Ruta raíz
+app.get("/", (req, res) => {
+    res.json({
+        name: "Backend API - Emanuel Villegas",
+        status: "OK",
+        docs: "/api/usuarios"
+    });
+});
+
 //Rutas
 app.use('/api/clientes', clientes);
 app.use('/api/usuarios', usuarios);
