@@ -1,44 +1,20 @@
 const mysql = require('mysql2');
 const config = require('../config');
 
-const dbconfig = {
+const pool = mysql.createPool({
     host: config.mysql.host,
     port: config.mysql.port,
     user: config.mysql.user,
     password: config.mysql.password,
     database: config.mysql.database,
-}
-
-let conexion;
-
-function conMysql(){
-    conexion = mysql.createConnection(dbconfig);
-    
-    conexion.connect((err)=>{
-        if(err){
-            console.log('db err', err);
-            console.log('Reintentando conexión')
-            setTimeout(conMysql, 2000);
-        }else{
-            console.log('Conexión con la BD establecida exitosamente')
-        }
-    });
-
-    /*conexion.on('error',(err)=>{
-        console.log('db error', err);
-        if(err.code === 'PROTOCOL_CONNECTION_LOST'){
-            conMysql();
-        }else{
-            throw err;
-        }
-    })*/
-}
-
-conMysql();
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
 
 function todos(tabla){
     return new Promise((resolve, reject)=>{
-        conexion.query(`SELECT * FROM ${tabla}`, (error,result)=>{
+        pool.query(`SELECT * FROM ??`, [tabla], (error,result)=>{
             return error ? reject(error) : resolve(result);
             
         })
@@ -47,7 +23,7 @@ function todos(tabla){
 
 function uno(tabla, id){
     return new Promise((resolve, reject)=>{
-        conexion.query(`SELECT * FROM ${tabla} WHERE id=${id}`, (error,result)=>{
+        pool.query(`SELECT * FROM ?? WHERE id=?`, [tabla, id], (error,result)=>{
             return error ? reject(error) : resolve(result);
             
         })
@@ -56,7 +32,7 @@ function uno(tabla, id){
 
 function agregar(tabla, data){
     return new Promise((resolve, reject)=>{
-        conexion.query(`INSERT INTO ${tabla} SET ? ON DUPLICATE KEY UPDATE ?`, [data, data], (error,result)=>{
+        pool.query(`INSERT INTO ?? SET ? ON DUPLICATE KEY UPDATE ?`, [tabla, data, data], (error,result)=>{
             return error ? reject(error) : resolve(result);
             
         })
@@ -65,7 +41,7 @@ function agregar(tabla, data){
 
 function modificar(tabla, id, data){
     return new Promise((resolve, reject)=>{
-        conexion.query(`UPDATE ${tabla} SET ? WHERE ID = ?`, [data, id], (error,result)=>{
+        pool.query(`UPDATE ?? SET ? WHERE ID = ?`, [tabla, data, id], (error,result)=>{
             return error ? reject(error) : resolve(result);
             
         })
@@ -74,7 +50,7 @@ function modificar(tabla, id, data){
 
 function eliminar(tabla, id){
     return new Promise((resolve, reject)=>{
-        conexion.query(`DELETE FROM ${tabla} WHERE id=${id}`, (error,result)=>{
+        pool.query(`DELETE FROM ?? WHERE id=?`, [tabla, id], (error,result)=>{
             return error ? reject(error) : resolve(result);
             
         })
@@ -83,7 +59,7 @@ function eliminar(tabla, id){
 
 function query(tabla, consulta){
     return new Promise((resolve, reject)=>{
-        conexion.query(`SELECT * FROM ${tabla} WHERE ?`, consulta, (error,result)=>{
+        pool.query(`SELECT * FROM ?? WHERE ?`,[tabla, consulta], (error,result)=>{
             return error ? reject(error) : resolve(result[0]);
             
         })
@@ -96,5 +72,6 @@ module.exports = {
     agregar,
     modificar,
     eliminar,
-    query
+    query,
+    pool
 }
